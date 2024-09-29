@@ -5,11 +5,11 @@ import com.example.demo.entity.result.ResultMessage;
 import com.example.demo.service.UserService;
 import com.example.demo.service.impl.UserServiceImpl;
 import com.example.demo.utils.ResultUtil;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+@ApiOperation("用户controller")
 @RequestMapping("/user")
 @RestController
 public class UserController {
@@ -17,12 +17,14 @@ public class UserController {
     @Autowired
     private UserServiceImpl userService;
 
-    @RequestMapping("/login")
+    @PostMapping("/login")
+    @ApiOperation("用户登录")
     public ResultMessage<String> home() {
         return ResultUtil.success("hello word!");
     }
 
-    @RequestMapping("/getUser")
+    @GetMapping("/getUser")
+    @ApiOperation("Id查询用户信息")
     public ResultMessage<User> getUser(@RequestParam("userId") String userId) {
         return userService.getUserById(userId);
     }
