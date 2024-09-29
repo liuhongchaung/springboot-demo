@@ -14,6 +14,8 @@ public class DemoInterceptorConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(demoInterceptor).addPathPatterns("/demo/**");
+        registry.addInterceptor(demoInterceptor).addPathPatterns("/demo/**")
+                .addPathPatterns("/user/**")
+                .excludePathPatterns("/user/login");
     }
 }
