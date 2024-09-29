@@ -1,5 +1,6 @@
 package com.example.demo.utils;
 
+import com.example.demo.entity.model.User;
 import io.jsonwebtoken.*;
 import org.springframework.util.StringUtils;
 
@@ -16,12 +17,10 @@ public class JwtUtils {
     public static final String SECRET = "DfsGs8dfF58jj85sdf2ASef5ef8g2";
 
     /**
-     *
-     * @param id
-     * @param role
+     * @param user
      * @return
      */
-    public static String getJwtToken(String id,Integer role){
+    public static String getJwtToken(User user){
         String JwtToken = Jwts.builder()
                 //JWT头信息
                 .setHeaderParam("typ", "JWT")
@@ -31,8 +30,10 @@ public class JwtUtils {
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRE))
                 //设置token主体信息，存储用户信息
-                .claim("id", id)
-                .claim("role", role)
+                .claim("id", user.getId())
+                .claim("role", user.getRole())
+                .claim("userName", user.getUserName())
+                .claim("loginName", user.getLoginName())
                 .signWith(SignatureAlgorithm.HS256, SECRET)
                 .compact();
         return JwtToken;
