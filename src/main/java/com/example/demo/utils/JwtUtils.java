@@ -1,14 +1,21 @@
 package com.example.demo.utils;
 
 import com.example.demo.entity.model.User;
+import com.example.demo.exception.MyException;
+import com.example.demo.mapper.UserMapper;
 import io.jsonwebtoken.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.Objects;
 
 
 public class JwtUtils {
+
+    @Autowired
+    private static UserMapper userMapper;
 
     /**
      * 两个常量： 过期时间；秘钥
@@ -17,6 +24,7 @@ public class JwtUtils {
     public static final String SECRET = "DfsGs8dfF58jj85sdf2ASef5ef8g2";
 
     /**
+     * 生成token
      * @param user
      * @return
      */
@@ -31,34 +39,13 @@ public class JwtUtils {
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRE))
                 //设置token主体信息，存储用户信息
                 .claim("id", user.getId())
-                .claim("role", user.getRole())
-                .claim("userName", user.getUserName())
-                .claim("loginName", user.getLoginName())
                 .signWith(SignatureAlgorithm.HS256, SECRET)
                 .compact();
         return JwtToken;
     }
 
     /**
-     * 判断token是否存在与有效
-     * @Param jwtToken
-     */
-    public static boolean checkToken(String jwtToken){
-        if (StringUtils.isEmpty(jwtToken)){
-            return false;
-        }
-        try{
-            //验证token
-            Jwts.parser().setSigningKey(SECRET).parseClaimsJws(jwtToken);
-        }catch (Exception e){
-            e.printStackTrace();
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * 判断token是否存在与有效
+     * 校验token
      * @Param request
      */
     public static boolean checkToken(HttpServletRequest request){
@@ -75,56 +62,40 @@ public class JwtUtils {
     }
 
     /**
-     * 根据token获取会员id
+     * 校验token
      * @Param request
      */
-    public static String getMemberIdByJwtToken(HttpServletRequest request){
+    public static void checkUserToken(HttpServletRequest request){
         String token = request.getHeader("token");
         if (StringUtils.isEmpty(token)){
-            return "";
+            throw new MyException("未登录，请先登录！","401");
         }
-        Jws<Claims> claimsJws = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token);
-        Claims body = claimsJws.getBody();
-        return (String) body.get("id");
+        Jws<Claims> claimsJws;
+        try {
+            claimsJws = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token);
+        }catch (Exception e){
+            throw new MyException("登录失效，请重新登录！","401");
+        }
+        String userId = (String)claimsJws.getBody().get("id");
+        User user = userMapper.getValidUser(userId);
+        if (Objects.isNull(user)){
+            throw new MyException("无效用户，请重新登录！","401");
+        }
     }
 
     /**
-     * 根据token获取会员id
-     * @Param token
+     * 根据request获取用户信息
+     * @Param request
      */
-    public static String getMemberIdByJwtToken(String token){
-        if (StringUtils.isEmpty(token)){
-            return "";
-        }
-        Jws<Claims> claimsJws = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token);
-        Claims body = claimsJws.getBody();
-        return (String) body.get("id");
-    }
-
-
-    /**
-     * 通过token获取role权限
-     * @param request
-     * @return
-     */
-    public static int getRoleByJwtToken(HttpServletRequest request){
+    public static User getUserByJwtToken(HttpServletRequest request){
         String token = request.getHeader("token");
         Jws<Claims> claimsJws = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token);
         Claims body = claimsJws.getBody();
-        return (Integer) body.get("role");
+        String userId = (String) body.get("id");
+        User user = userMapper.selectByPrimaryKey(userId);
+        return user;
     }
 
-    /**
-     * 通过token获取role权限
-     * @param token
-     * @return
-     */
-    public static int getRoleByJwtToken(String token){
-
-        Jws<Claims> claimsJws = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token);
-        Claims body = claimsJws.getBody();
-        return (Integer) body.get("role");
-    }
 
 
 

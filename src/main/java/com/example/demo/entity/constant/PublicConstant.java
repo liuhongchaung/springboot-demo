@@ -29,6 +29,19 @@ public class PublicConstant {
     /**
      * 失败默认消息
      */
-    public final static String ERROR_SUCCESS = "操作失败";
+    public final static String MESSAGE_ERROR = "操作失败";
+
+
+    /**
+     * 有效
+     */
+    public final static String VALID = "1";
+
+    /**
+     * 无效
+     */
+    public final static String UNVALID = "2";
+
+
 
 }

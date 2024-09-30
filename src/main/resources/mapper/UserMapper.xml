@@ -125,10 +125,21 @@
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+
   <select id="login" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from user
-    where login_name = #{loginName,jdbcType=VARCHAR} and password = #{password,jdbcType=VARCHAR}
+    where login_name = #{loginName,jdbcType=VARCHAR}
+    and password = #{password,jdbcType=VARCHAR}
+    and role = #{role,jdbcType=VARCHAR},
   </select>
+
+  <select id="getValidUser" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user
+    where id = #{id,jdbcType=VARCHAR} and valid = '1'
+  </select>
+
 </mapper>

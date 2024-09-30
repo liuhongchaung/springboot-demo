@@ -2,6 +2,7 @@ package com.example.demo.mapper;
 
 import com.example.demo.entity.model.User;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 @Mapper
@@ -19,5 +20,8 @@ public interface UserMapper {
 
     int updateByPrimaryKey(User record);
 
-    User login(String loginName, String password);
+    User login(@Param("loginName")String loginName, @Param("password")String password, @Param("role")String role);
+
+    User getValidUser(String id);
+
 }

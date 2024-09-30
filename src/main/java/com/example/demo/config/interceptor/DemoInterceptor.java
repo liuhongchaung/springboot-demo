@@ -1,8 +1,8 @@
 package com.example.demo.config.interceptor;
 
 import com.example.demo.utils.JwtUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,21 +12,19 @@ import javax.servlet.http.HttpServletResponse;
 public class DemoInterceptor implements HandlerInterceptor {
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String token = request.getHeader("token");
-
-        if (StringUtils.isEmpty(token)){
-            System.out.println("无token，请登录！");
-            throw new RuntimeException("无token，请登录！");
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler){
+        //如果不是映射到方法直接通过
+        if(!(handler instanceof HandlerMethod)){
+            return true;
+        } else {
+            HandlerMethod h = (HandlerMethod) handler;
+            AuthAccess authAccess = h.getMethodAnnotation(AuthAccess.class);
+            if (authAccess != null) {
+                return true;
+            }
         }
-        //检查是否有token
-        /*if (JwtUtils.checkToken(request)){
-            response.setStatus(500);
-            System.out.println("请登录");
-
-            return false;
-        }*/
-        System.out.println("通过");
+        //校验token
+        JwtUtils.checkUserToken(request);
         return true;
     }
 }

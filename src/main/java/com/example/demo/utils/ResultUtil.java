@@ -53,7 +53,7 @@ public class ResultUtil<T> {
         if(message != null && message.length==1){
             resultMessage.setMessage(message[0]);
         }else {
-            resultMessage.setMessage(PublicConstant.ERROR_SUCCESS);
+            resultMessage.setMessage(PublicConstant.MESSAGE_ERROR);
         }
         return resultMessage;
     }
@@ -64,9 +64,9 @@ public class ResultUtil<T> {
      */
     public static  ResultMessage error(String message , String code) {
         ResultMessage resultMessage = new ResultMessage();
-        resultMessage.setState(message);
+        resultMessage.setMessage(message);
         resultMessage.setCode(code);
-        resultMessage.setMessage(PublicConstant.ERROR_SUCCESS);
+        resultMessage.setState(PublicConstant.STATE_ERROR);
         return resultMessage;
     }
 }

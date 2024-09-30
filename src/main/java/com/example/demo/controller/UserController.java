@@ -19,8 +19,8 @@ public class UserController {
 
     @PostMapping("/login")
     @ApiOperation("用户登录")
-    public ResultMessage<String> home() {
-        return ResultUtil.success("hello word!");
+    public ResultMessage<User> login(@RequestBody User user) {
+        return userService.login(user);
     }
 
     @GetMapping("/getUser")
