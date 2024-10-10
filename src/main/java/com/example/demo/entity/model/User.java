@@ -16,8 +16,14 @@ public class User {
 
     private String phone;
 
+    /**
+     * 权限，1管理员，2普通用户
+     */
     private String role;
 
+    /**
+     * 是否有效，1-有效，2-无效
+     */
     private String valid;
 
     private Date createTime;
