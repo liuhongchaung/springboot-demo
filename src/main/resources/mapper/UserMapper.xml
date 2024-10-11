@@ -17,15 +17,15 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from user
+    from `user`
     where id = #{id,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from user
+    delete from `user`
     where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.example.demo.entity.model.User">
-    insert into user (id, login_name, password, 
+    insert into `user` (id, login_name, password,
       user_name, phone, role, 
       valid, create_time)
     values (#{id,jdbcType=VARCHAR}, #{loginName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
@@ -33,7 +33,7 @@
       #{valid,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.example.demo.entity.model.User">
-    insert into user
+    insert into `user`
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
@@ -88,7 +88,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.example.demo.entity.model.User">
-    update user
+    update `user`
     <set>
       <if test="loginName != null">
         login_name = #{loginName,jdbcType=VARCHAR},
@@ -115,7 +115,7 @@
     where id = #{id,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.example.demo.entity.model.User">
-    update user
+    update `user`
     set login_name = #{loginName,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
       user_name = #{userName,jdbcType=VARCHAR},
@@ -129,16 +129,16 @@
   <select id="login" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
-    from user
+    from `user`
     where login_name = #{loginName,jdbcType=VARCHAR}
     and password = #{password,jdbcType=VARCHAR}
-    and role = #{role,jdbcType=VARCHAR},
+    and role = #{role,jdbcType=VARCHAR}
   </select>
 
   <select id="getValidUser" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
-    from user
+    from `user`
     where id = #{id,jdbcType=VARCHAR} and valid = '1'
   </select>
 
