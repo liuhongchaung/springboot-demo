@@ -15,7 +15,7 @@
     id, login_name, password, user_name, phone, role, valid, create_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from `user`
     where id = #{id,jdbcType=VARCHAR}
@@ -26,10 +26,10 @@
   </delete>
   <insert id="insert" parameterType="com.example.demo.entity.model.User">
     insert into `user` (id, login_name, password,
-      user_name, phone, role, 
+      user_name, phone, role,
       valid, create_time)
-    values (#{id,jdbcType=VARCHAR}, #{loginName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
-      #{userName,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{role,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR}, #{loginName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+      #{userName,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{role,jdbcType=VARCHAR},
       #{valid,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.example.demo.entity.model.User">
@@ -132,7 +132,6 @@
     from `user`
     where login_name = #{loginName,jdbcType=VARCHAR}
     and password = #{password,jdbcType=VARCHAR}
-    and role = #{role,jdbcType=VARCHAR}
   </select>
 
   <select id="getValidUser" parameterType="java.lang.String" resultMap="BaseResultMap">

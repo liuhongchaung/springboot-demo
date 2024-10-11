@@ -24,16 +24,18 @@ public class UserServiceImpl implements UserService {
         if (StringUtils.isEmpty(user.getLoginName()) ||  StringUtils.isEmpty(user.getPassword())){
             return ResultUtil.error("用户名或密码不能为空");
         }
-        User loginUser = userMapper.login(user.getLoginName(),user.getPassword(),user.getRole());
+        User loginUser = userMapper.login(user.getLoginName(),user.getPassword());
         if (Objects.isNull(loginUser)){
             return ResultUtil.error("用户名或密码错误");
         }
         if (PublicConstant.UNVALID.equals(loginUser.getValid())){
             return ResultUtil.error("此用户已禁用，请联系管理员");
-        }else {
-            loginUser.setToken(JwtUtils.getJwtToken(loginUser));
-            return ResultUtil.success(loginUser,"登录成功");
         }
+        if (!user.getRole().equals(loginUser.getRole())){
+            return ResultUtil.error("此用户为“"+PublicConstant.roleMap.get(loginUser.getRole())+"”权限");
+        }
+        loginUser.setToken(JwtUtils.getJwtToken(loginUser));
+        return ResultUtil.success(loginUser,"登录成功");
     }
 
     @Override

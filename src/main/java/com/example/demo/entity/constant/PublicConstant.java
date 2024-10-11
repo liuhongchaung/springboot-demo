@@ -1,5 +1,8 @@
 package com.example.demo.entity.constant;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class PublicConstant {
 
     /**
@@ -41,6 +44,18 @@ public class PublicConstant {
      * 无效
      */
     public final static String UNVALID = "2";
+
+
+    public final static Map<String,String> roleMap = new HashMap();
+    static {
+        roleMap.put("1","管理员");
+        roleMap.put("2","普通用户");
+    }
+    /**
+     * 管理员-1,普通用户-2
+     */
+    public final static String ROLE_1 = "1";
+    public final static String ROLE_2 = "2";
 
 
 

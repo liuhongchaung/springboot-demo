@@ -20,7 +20,7 @@ public interface UserMapper {
 
     int updateByPrimaryKey(User record);
 
-    User login(@Param("loginName")String loginName, @Param("password")String password, @Param("role")String role);
+    User login(@Param("loginName")String loginName, @Param("password")String password);
 
     User getValidUser(String id);
 
