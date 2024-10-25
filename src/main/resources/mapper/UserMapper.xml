@@ -141,4 +141,18 @@
     where id = #{id,jdbcType=VARCHAR} and valid = '1'
   </select>
 
+  <select id="getAllUser"  resultMap="BaseResultMap" parameterType="com.example.demo.entity.model.User">
+    select
+    <include refid="Base_Column_List" />
+    from `user`
+    <where>
+      <if test="loginName != null and loginName != ''">
+        login_name = #{loginName,jdbcType=VARCHAR}
+      </if>
+      <if test="userName != null and userName != ''">
+        and user_name = #{userName,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
+
 </mapper>

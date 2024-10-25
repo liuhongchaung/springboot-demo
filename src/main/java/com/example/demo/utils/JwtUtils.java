@@ -9,13 +9,11 @@ import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 
 public class JwtUtils {
-
-    @Autowired
-    private static UserMapper userMapper;
 
     /**
      * 两个常量： 过期时间；秘钥
@@ -70,30 +68,22 @@ public class JwtUtils {
         if (StringUtils.isEmpty(token)){
             throw new MyException("未登录，请先登录！","401");
         }
-        Jws<Claims> claimsJws;
         try {
-            claimsJws = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token);
+            Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token);
         }catch (Exception e){
             throw new MyException("登录失效，请重新登录！","401");
-        }
-        String userId = (String)claimsJws.getBody().get("id");
-        User user = userMapper.getValidUser(userId);
-        if (Objects.isNull(user)){
-            throw new MyException("无效用户，请重新登录！","401");
         }
     }
 
     /**
-     * 根据request获取用户信息
+     * 根据request获取用户id
      * @Param request
      */
-    public static User getUserByJwtToken(HttpServletRequest request){
+    public static String getUserIdByJwtToken(HttpServletRequest request){
         String token = request.getHeader("token");
         Jws<Claims> claimsJws = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token);
         Claims body = claimsJws.getBody();
-        String userId = (String) body.get("id");
-        User user = userMapper.selectByPrimaryKey(userId);
-        return user;
+        return (String) body.get("id");
     }
 
 

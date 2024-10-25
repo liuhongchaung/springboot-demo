@@ -19,8 +19,6 @@ public class ResultUtil<T> {
         resultMessage.setData(object);
         if(message != null && message.length==1){
             resultMessage.setMessage(message[0]);
-        }else {
-            resultMessage.setMessage(PublicConstant.MESSAGE_SUCCESS);
         }
         return resultMessage;
     }
@@ -35,8 +33,6 @@ public class ResultUtil<T> {
         resultMessage.setCode(PublicConstant.CODE_SUCCESS);
         if(message != null && message.length==1){
             resultMessage.setMessage(message[0]);
-        }else {
-            resultMessage.setMessage(PublicConstant.MESSAGE_SUCCESS);
         }
         return resultMessage;
     }
