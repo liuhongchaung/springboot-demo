@@ -7,6 +7,8 @@ import com.example.demo.mapper.UserMapper;
 import com.example.demo.service.UserService;
 import com.example.demo.utils.JwtUtils;
 import com.example.demo.utils.ResultUtil;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,6 +52,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResultMessage<List<User>> getAllUser(User user){
-        return ResultUtil.success(userMapper.getAllUser(user));
+        PageHelper.startPage(1,10);
+        List<User> allUser = userMapper.getAllUser(user);
+        PageInfo<User> page = new PageInfo(allUser);
+        return ResultUtil.success(page);
     }
 }
