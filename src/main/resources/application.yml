@@ -8,7 +8,7 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/demo?useUnicode=true&characterEncoding=utf8&autoReconnect=true&useSSL=false&serverTimezone=Asia/Shanghai
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password: 123456
+    password: chuang
 
   #时间统一设置
   jackson:

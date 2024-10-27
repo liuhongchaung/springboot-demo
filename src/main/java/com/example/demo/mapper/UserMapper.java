@@ -1,5 +1,6 @@
 package com.example.demo.mapper;
 
+import com.example.demo.entity.dto.SelectUserDto;
 import com.example.demo.entity.model.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -26,6 +27,8 @@ public interface UserMapper {
 
     User getValidUser(String id);
 
-    List<User> getAllUser(User record);
+    User selectUserByLoginName(@Param("loginName")String loginName);
+
+    List<User> getAllUser(SelectUserDto userDto);
 
 }
